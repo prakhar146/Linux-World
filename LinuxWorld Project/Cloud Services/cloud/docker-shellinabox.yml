@@ -1,0 +1,35 @@
+- hosts: localhost 
+  tasks:
+     - package: 
+        name: "docker-ce"       
+        state: present 
+
+
+     - service: 
+        name: "docker"
+        state: restarted
+        enabled: yes
+  
+
+     - pip:
+        name: "docker-py"
+        state: present 
+
+     - docker_image:
+        name: shellinabox
+        tag: v2
+
+     - docker_container:
+        name: x13
+        image: shellinabox:v2
+        state: started      
+        interactive: true
+        tty: true
+        env: DISPLAY=$DISPLAY
+        ipc_mode: host
+        tmpfs: /tmp/.X11-unix
+        published_ports: 5555:4200
+#        detach: true
+          
+ 
+

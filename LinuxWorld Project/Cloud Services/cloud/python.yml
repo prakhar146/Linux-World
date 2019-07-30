@@ -1,0 +1,35 @@
+- hosts: localhost 
+  tasks:
+     - package: 
+        name: "docker-ce"       
+        state: present 
+
+
+     - service: 
+        name: "docker"
+        state: restarted
+        enabled: yes
+  
+
+     - pip:
+        name: "docker-py"
+        state: present 
+
+     - docker_image:
+        name: python3
+        tag: v3
+
+     - docker_container:
+        name: x13
+        image: python3:v3
+        state: started      
+        interactive: true
+        tty: true
+        env: DISPLAY=$DISPLAY
+        ipc_mode: host
+        tmpfs: /tmp/.X11-unix
+        published_ports: 6868:4200
+#        detach: true
+          
+ 
+

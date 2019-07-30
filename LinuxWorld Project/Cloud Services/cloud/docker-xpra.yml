@@ -1,0 +1,40 @@
+- hosts: localhost
+  vars_prompt: 
+     - name: x
+       prompt: "Enter your name "
+       private: false 
+  tasks:
+     - package: 
+        name: "docker-ce"       
+        state: present 
+
+
+     - service: 
+        name: "docker"
+        state: restarted
+        enabled: yes
+  
+
+     - pip:
+        name: "docker-py"
+        state: present 
+
+     - docker_image:
+        name: xpra_firefox
+        tag: v1
+
+     - docker_container:
+        name: "{{ x }}"
+        image: xpra_firefox:v1
+        state: started      
+        interactive: true
+        tty: true
+        env: DISPLAY=:0
+        ipc_mode: host
+        tmpfs: /tmp/.X11-unix
+        published_ports: 1111:3333
+
+#        detach: true
+          
+ 
+
